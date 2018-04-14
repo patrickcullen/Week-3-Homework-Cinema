@@ -1,4 +1,6 @@
 require_relative("../db/sql_runner")
+require_relative("film.rb")
+require_relative("ticket.rb")
 
 class Customer
 
@@ -38,6 +40,8 @@ class Customer
     SqlRunner.run(sql, values)
   end
 
+# Customer has bought tickets for which films?
+
   def films()
     sql = "SELECT films.* FROM films INNER JOIN tickets ON
     films.id = tickets.film_id WHERE tickets.customer_id = $1;"
@@ -45,6 +49,8 @@ class Customer
     films = SqlRunner.run(sql, values)
     result = Film.map_films(films)
   end
+
+# Customer has tickets for how many films?
 
   def how_many_films()
     sql = "SELECT films.* FROM films INNER JOIN tickets ON

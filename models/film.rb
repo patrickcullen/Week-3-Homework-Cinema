@@ -40,6 +40,8 @@ class Film
     SqlRunner.run(sql, values)
   end
 
+# Which customers have bought tickets for film?
+
   def customers()
     sql = "SELECT customers.* FROM customers INNER JOIN tickets ON
     customers.id = tickets.customer_id WHERE tickets.film_id = $1;"
@@ -47,6 +49,8 @@ class Film
     customers = SqlRunner.run(sql, values)
     result = Customer.map_customers(customers)
   end
+
+# How many customers have bought tickets for film?
 
   def how_many_customers()
     sql = "SELECT customers.* FROM customers INNER JOIN tickets ON
