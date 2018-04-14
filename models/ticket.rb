@@ -15,22 +15,23 @@ class Ticket
   end
 
   def save()
-    sql = "INSERT INTO tickets (customer_id, film_id) VALUES ($1, $2) RETURNING id;"
-    values = [@customer_id, @film_id]
-    ticket = SqlRunner.run(sql, values ).first
-    @id = ticket['id'].to_i
 
-    cash = @id.customer(@customer_id)
-    price = @id.film(@film_id)
+    customer_cash = customer().cash.to_i
+    film_price = film().price.to_i
 
-    # sql = "SELECT * FROM customers WHERE id = $1;"
-    # values = [@customer_id]
-    # cash = SqlRunner.run(sql, values )[2]
+    if customer_cash >= film_price
 
-    # sql = "UPDATE customers SET (name, cash) = ($1, $2) WHERE id = $3;"
-    # values = [@name, @cash, @id]
-    # SqlRunner.run(sql, values)
+      sql = "INSERT INTO tickets (customer_id, film_id) VALUES ($1, $2) RETURNING id;"
+      values = [@customer_id, @film_id]
+      ticket = SqlRunner.run(sql, values ).first
+      @id = ticket['id'].to_i
 
+      remaining = customer_cash - film_price
+      sql = "UPDATE customers SET cash = $1 WHERE id = $2;"
+      values = [remaining, @customer_id]
+      SqlRunner.run(sql, values)
+
+    end
   end
 
   def self.all()
