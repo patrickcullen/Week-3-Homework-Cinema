@@ -61,7 +61,7 @@ film4.save()
 screening1 = Screening.new({
   'film_id' => film1.id,
   'film_time' => '19:00',
-  'ticket_limit' => 1
+  'ticket_limit' => 5
   })
 screening1.save()
 screening2 = Screening.new({

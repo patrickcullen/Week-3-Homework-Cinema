@@ -60,6 +60,26 @@ class Film
     result = Customer.map_customers(customers).count
   end
 
+  # Tickets have been sold for which films?
+
+  def tickets()
+    sql = "SELECT * FROM tickets WHERE film_id = $1;"
+    values = [@id]
+    ticket_hash = SqlRunner.run(sql, values)
+    result = Ticket.map_tickets(ticket_hash)
+  end
+
+  # What is the most popular screening for a given film?
+
+  def most_popular_screening
+    sql = "SELECT tickets.* FROM tickets INNER JOIN
+    screenings ON tickets.screening_id = screenings.id
+    WHERE tickets.film_id = $1 ORDER BY tickets.screening_id;"
+    values = [@id]
+    ticket_hash = SqlRunner.run(sql, values)
+    result = Ticket.map_tickets(ticket_hash)
+  end
+
   def self.map_films(film_data)
     return film_data.map {|film_hash| Film.new(film_hash)}
   end

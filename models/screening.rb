@@ -2,6 +2,7 @@ require_relative("../db/sql_runner")
 require_relative("film.rb")
 require_relative("customer.rb")
 require_relative("ticket.rb")
+# require_relative("dummyscreening.rb")
 
 class Screening
 
@@ -42,5 +43,18 @@ class Screening
     tickets = SqlRunner.run(sql, values)
     result = Ticket.map_tickets(tickets).count
   end
+
+  # def self.film_screenings
+  #   sql = "SELECT films.title, screenings.film_time FROM films
+  #    INNER JOIN screenings ON screenings.film_id = films.id;"
+  #   values = []
+  #   screenings = SqlRunner.run(sql, values)
+  #   result = Film.map_screenings(screenings)
+  # end
+
+  def self.map_screenings(screening_data)
+    return screening_data.map {|screening_hash| Film.new(screening_hash)}
+  end
+
 
 end
